@@ -1,14 +1,10 @@
 <!DOCTYPE html>
 <!-- saved from url=(0024)https://ctfofficial.com/ -->
-<html lang="en-US">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- FIX RESPONSIVE & CLEAN WORDPRESS STATIC -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- FIX RESPONSIVE VIEWPORT -->
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-<!-- FORCE MOBILE RESPONSIVE FIX -->
 <style>
+/* RESET */
 html, body {
   width: 100%;
   margin: 0;
@@ -16,24 +12,43 @@ html, body {
   overflow-x: hidden;
 }
 
+/* HIDE WORDPRESS INTERNAL ELEMENTS */
+.skip-link,
+.screen-reader-text,
+.wp-block-navigation__responsive-container,
+.wp-block-search,
+.wp-site-blocks nav,
+.wp-block-navigation,
+.wp-block-navigation__submenu-container,
+.wp-block-search__button,
+.wp-block-search__input,
+.wp-block-navigation__responsive-dialog,
+.menu-toggle,
+.wp-admin,
+.admin-bar,
+#wpadminbar {
+  display: none !important;
+}
+
+/* IMAGE & MEDIA FIX */
 img, video, iframe {
   max-width: 100%;
   height: auto;
 }
 
-.container, .row, section, header, footer {
-  max-width: 100% !important;
+/* FORCE CLEAN LAYOUT */
+section, header, footer, main, article, div {
   box-sizing: border-box;
 }
 
-* {
-  box-sizing: border-box;
+/* CENTER MAIN CONTENT */
+.wp-site-blocks {
+  max-width: 100%;
+  margin: 0 auto;
 }
 </style>
 
-<!-- FIX WORDPRESS ABSOLUTE PATH (BASIC) -->
-<base href="./">
-	
+<base href="./">	
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
