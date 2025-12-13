@@ -2,160 +2,173 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>CTF Corporation – Construction Technology Fabrication</title>
+<title>CTF Corporation – Pi App Tahap 10</title>
 
-<!-- ================= PI NETWORK SDK ================= -->
-<script src="pi-sdk.js"></script>
+<!-- ================= PI SDK OFFICIAL ================= -->
+<script src="https://sdk.minepi.com/pi-sdk.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   if (window.Pi) {
-    Pi.init({ version: "2.0", sandbox: false });
+    Pi.init({
+      version: "2.0",
+      sandbox: false
+    });
   }
 });
 </script>
 
-<!-- ================= CSS UTAMA (BIARKAN JIKA ADA) ================= -->
-<link rel="stylesheet" href="main.min.css">
-
-<!-- ================= CSS FINAL RAPIH & CEPAT ================= -->
+<!-- ================= STYLE ================= -->
 <style>
-/* ================= RESET ================= */
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-
-html, body {
-  width: 100%;
+body {
   margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-  font-family: "Poppins", Arial, sans-serif;
-  background: #fff;
-}
-
-/* MEDIA */
-img, video, iframe {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* ================= WRAPPER ================= */
-.page-wrapper {
-  width: 100%;
   min-height: 100vh;
-  overflow: hidden;
-  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Poppins, Arial, sans-serif;
+  background: #f3f4f8;
 }
 
-/* ================= HEADER ================= */
-header {
-  position: relative;
-  z-index: 20;
-}
-
-/* ================= MAIN ================= */
-main {
-  display: block;
+.card {
+  background: #fff;
+  padding: 35px;
   width: 100%;
+  max-width: 420px;
+  border-radius: 16px;
+  box-shadow: 0 15px 40px rgba(0,0,0,.12);
+  text-align: center;
 }
 
-/* ================= SECTION ================= */
-section {
-  position: relative;
+.card h1 {
+  margin-bottom: 10px;
+}
+
+.card p {
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 25px;
+}
+
+button {
   width: 100%;
-  padding: 80px 20px;
-  margin: 0 auto;
-  clear: both;
-}
-
-/* ================= ELEMENTOR ANTI OVERLAP ================= */
-[class*="elementor-element"] {
-  margin-top: 0 !important;
-  transform: none !important;
-}
-
-.elementor-section,
-.e-con {
-  position: relative !important;
-  margin-bottom: 70px !important;
-  padding-top: 40px !important;
-  padding-bottom: 40px !important;
-}
-
-.elementor-widget {
-  margin-bottom: 30px !important;
-  position: relative !important;
-}
-
-/* ================= WORDPRESS CLEAN ================= */
-.skip-link,
-.screen-reader-text,
-.wp-admin,
-#wpadminbar {
-  display: none !important;
-}
-
-/* ================= FOOTER ================= */
-footer {
-  padding: 40px 20px;
-  background: #111;
+  padding: 14px;
+  font-size: 17px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg,#6f3ab7,#9b51e0);
   color: #fff;
 }
 
-/* ================= MOBILE ================= */
-@media (max-width: 768px) {
-  section {
-    padding: 50px 15px;
-  }
+button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
 
-  .elementor-section,
-  .e-con {
-    margin-bottom: 50px !important;
-    padding: 30px 15px !important;
-  }
+/* POPUP */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.popup {
+  background: #fff;
+  padding: 30px;
+  width: 90%;
+  max-width: 360px;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.popup h2 {
+  color: #2ecc71;
+  margin-bottom: 10px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="page-wrapper">
+<div class="card">
+  <h1>Bayar dengan Pi</h1>
+  <p>Pembayaran resmi Pi Network – Tahap 10</p>
 
-  <!-- ================= HEADER ================= -->
-  <header id="header">
-    <!-- HEADER WORDPRESS / ELEMENTOR ANDA -->
-  </header>
-
-  <!-- ================= MAIN CONTENT ================= -->
-  <main id="main-content">
-
-    <section id="hero">
-      <!-- HERO / SLIDER -->
-    </section>
-
-    <section id="services">
-      <!-- LAYANAN -->
-    </section>
-
-    <section id="projects">
-      <!-- PROJECT -->
-    </section>
-
-    <section id="umkm">
-      <!-- UMKM -->
-    </section>
-
-  </main>
-
-  <!-- ================= FOOTER ================= -->
-  <footer>
-    © 2025 CTF Corporation. All Rights Reserved.
-  </footer>
-
+  <button id="payBtn" onclick="payPi()">Bayar 0.01 Pi</button>
 </div>
+
+<!-- POPUP SUKSES -->
+<div class="overlay" id="successPopup">
+  <div class="popup">
+    <h2>✅ Pembayaran Berhasil</h2>
+    <p>Transaksi Pi Anda telah berhasil dan tercatat.</p>
+    <button onclick="closePopup()">Tutup</button>
+  </div>
+</div>
+
+<script>
+const BACKEND_URL = "https://domain-anda.com/pi"; 
+// contoh endpoint:
+// POST /pi/approve.php
+// POST /pi/complete.php
+
+function payPi() {
+  const btn = document.getElementById("payBtn");
+  btn.disabled = true;
+
+  Pi.createPayment({
+    amount: 0.01,
+    memo: "Pembayaran Produk CTF Corporation",
+    metadata: {
+      merchant: "CTF Corporation",
+      wallet: "GCXO6ADHUW4GYG2KB7Y65X5IEYQQASD4BGGYVPUC6YJ4AS3GUCP6NJST"
+    }
+  }, {
+    onReadyForServerApproval: function (paymentId) {
+      fetch(BACKEND_URL + "/approve.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ paymentId })
+      });
+    },
+
+    onReadyForServerCompletion: function (paymentId, txid) {
+      fetch(BACKEND_URL + "/complete.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ paymentId, txid })
+      }).then(() => {
+        showSuccess();
+      });
+    },
+
+    onCancel: function () {
+      btn.disabled = false;
+      alert("Pembayaran dibatalkan");
+    },
+
+    onError: function (err) {
+      btn.disabled = false;
+      console.error(err);
+      alert("Terjadi kesalahan pembayaran");
+    }
+  });
+}
+
+function showSuccess() {
+  document.getElementById("successPopup").style.display = "flex";
+}
+
+function closePopup() {
+  document.getElementById("successPopup").style.display = "none";
+}
+</script>
 
 </body>
 </html>
